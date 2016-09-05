@@ -16,7 +16,12 @@ public class CameraController : MonoBehaviour
 	public float yMax = .67f;
 	public float yMin = -.91f;
 
-	private void Update () 
+	private void Awake()
+	{
+		Screen.fullScreen = true;
+	}
+
+	private void Update() 
 	{
 			//if using a desktop then camera is controlled by a mouse
 			var hDesktop = horizontalSpeed * Input.GetAxis ("Mouse X");
@@ -40,7 +45,7 @@ public class CameraController : MonoBehaviour
 	private Vector3 RotationCorrection(Vector3 rotateTowards, float verticalVelocity, float horizontalVelocity)
 	{
 		//we need to make sure it doesn't get past it's Limits
-		if(this.transform.rotation.x > xMax)
+		if(this.transform.rotation.x < xMax)
 		{
 			//only rotate toward the  and xMin
 			if(verticalVelocity > 0f)
@@ -48,7 +53,7 @@ public class CameraController : MonoBehaviour
 				rotateTowards = new Vector3(0f,horizontalVelocity,0f);
 			}
 		}
-		else if (this.transform.rotation.x < xMin )
+		else if (this.transform.rotation.x > xMin )
 		{
 			//only rotate toward the y and xMax
 			if(verticalVelocity < 0f)
@@ -58,18 +63,18 @@ public class CameraController : MonoBehaviour
 		}
 
 		Debug.LogFormat("{0} is my y rotation and {1} is the max", this.transform.rotation.y, yMax);
-		if(this.transform.rotation.y > yMax)
+		if(this.transform.rotation.y < yMax)
 		{
 			//only rotate toward the x and the yMin
-			if(horizontalVelocity > 0f)
+			if(horizontalVelocity < 0f)
 			{
 				rotateTowards = new Vector3(verticalVelocity,0f,0f);
 			} 
 		}
-		else if (this.transform.rotation.y < yMin)
+		else if (this.transform.rotation.y > yMin)
 		{
 			//only rotate toward the x and the yMax
-			if(horizontalVelocity < 0f)
+			if(horizontalVelocity > 0f)
 			{
 				rotateTowards = new Vector3(verticalVelocity,0f,0f);
 			} 
